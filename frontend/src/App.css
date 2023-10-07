@@ -1,0 +1,18 @@
+/* src/Grid.css */
+body {
+    margin: 0;
+}
+
+.grid-container {
+    display: grid;
+    border: 2px solid #000; /* Border style for cells */
+    grid-template-columns: repeat(100, 1fr); /* Adjust cell size here */
+}
+
+.grid-cell {
+    background-color: #fff; /* Background color for cells */
+}
+
+.grid-cell:hover{
+    border: 1px solid green;
+}
