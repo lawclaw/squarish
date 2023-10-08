@@ -9,6 +9,10 @@ import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import ButtonAppBar from "./components/ButtonAppBar.tsx";
 import {CssBaseline} from "@mui/material";
+import Grid from "@mui/system/Unstable_Grid";
+import {useStrictMode} from "react-konva";
+
+useStrictMode(true)
 
 function App() {
     const [count, setCount] = useState(0)
@@ -38,8 +42,24 @@ function App() {
     return (
         <>
             <CssBaseline/>
-            <ButtonAppBar/>
-            <TestZoom/>
+            <Grid
+                container
+                direction="column"
+                justifyContent="space-evenly"
+                alignItems="center"
+            >
+                <Grid xs={12}>
+                    <ButtonAppBar/>
+                </Grid>
+
+                <Grid xs={12}>
+                    <TestZoom/>
+
+                </Grid>
+
+
+            </Grid>
+
         </>
     )
 }
