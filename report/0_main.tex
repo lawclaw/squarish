@@ -3,11 +3,11 @@
 \usepackage{EngReport}
 
 \bibliography{Sources}
+\bibliographystyle{ieeetr}
 \onehalfspacing
 \graphicspath{{images/}}
 \geometry{letterpaper, portrait, includeheadfoot=true, hmargin=1in, vmargin=1in}
 
-%\fontsize{font size}{vertsize (usually 1.2x)}\selectfont
 
 \begin{document}
     \renewcommand{\familydefault}{\rmdefault}
@@ -27,9 +27,11 @@
         \input{2_ section 2}
         \input{3_ section 3}
         \input{4_ section 4}
+        \input{5_ section 5}
     }
 
-    \printbibliography
+    \clearpage
+    \printbibliography[heading=bibintoc]
     \begin{appendices}
         \appendix
         \input{appendices/appendix}
