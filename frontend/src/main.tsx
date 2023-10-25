@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import {createTheme, ThemeOptions, ThemeProvider} from "@mui/material/styles";
 import {CssBaseline} from "@mui/material";
 import SignupPage from "./pages/SignupPage.tsx";
+import VirtualGrid from "./components/VirtualGrid.tsx";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     {
         path: '/signup',
         element: <SignupPage/>
+    },
+    {
+        path: '/test',
+        element: <VirtualGrid width={100} height={100}/>
     }
 ])
 
@@ -26,10 +31,10 @@ export const themeOptions: ThemeOptions = {
     palette: {
         mode: 'light',
         primary: {
-            main: '#3f51b5',
+            main: '#039374',
         },
         secondary: {
-            main: '#f50057',
+            main: '#032393',
         },
     },
 };

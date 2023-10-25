@@ -20,6 +20,12 @@ dependencies:
   '@mui/system':
     specifier: ^5.14.12
     version: 5.14.12(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.25)(react@18.2.0)
+  '@types/react-virtualized':
+    specifier: ^9.21.26
+    version: 9.21.26
+  '@types/react-window':
+    specifier: ^1.8.7
+    version: 1.8.7
   konva:
     specifier: ^9.2.1
     version: 9.2.1
@@ -32,6 +38,9 @@ dependencies:
   react:
     specifier: ^18.2.0
     version: 18.2.0
+  react-data-grid:
+    specifier: 7.0.0-beta.40
+    version: 7.0.0-beta.40(react-dom@18.2.0)(react@18.2.0)
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
@@ -44,9 +53,18 @@ dependencies:
   react-konva:
     specifier: ^18.2.10
     version: 18.2.10(konva@9.2.1)(react-dom@18.2.0)(react@18.2.0)
+  react-konva-utils:
+    specifier: ^1.0.5
+    version: 1.0.5(konva@9.2.1)(react-dom@18.2.0)(react@18.2.0)
   react-router-dom:
     specifier: ^6.17.0
     version: 6.17.0(react-dom@18.2.0)(react@18.2.0)
+  react-virtualized:
+    specifier: ^9.22.5
+    version: 9.22.5(react-dom@18.2.0)(react@18.2.0)
+  react-window:
+    specifier: ^1.8.9
+    version: 1.8.9(react-dom@18.2.0)(react@18.2.0)
   react-zoom-pan-pinch:
     specifier: ^3.1.0
     version: 3.1.0(react-dom@18.2.0)(react@18.2.0)
@@ -909,6 +927,19 @@ packages:
       '@types/react': 18.2.25
     dev: false
 
+  /@types/react-virtualized@9.21.26:
+    resolution: {integrity: sha512-fUpUyQqF8PTrFmBZzE9PcdtPwL8xgqUdXmtrYadNgFDYwbKBl3Lz0khp+tZ7dyKIHUVDO9NDlgQx8q1+LIUk+A==}
+    dependencies:
+      '@types/prop-types': 15.7.8
+      '@types/react': 18.2.25
+    dev: false
+
+  /@types/react-window@1.8.7:
+    resolution: {integrity: sha512-FpPHEhmGVOBKomuR4LD2nvua1Ajcw6PfnfbDysuCwwPae3JNulcq3+uZIpQNbDN2AI1z+Y4tKj2xQ4ELiQ4QDw==}
+    dependencies:
+      '@types/react': 18.2.25
+    dev: false
+
   /@types/react@18.2.25:
     resolution: {integrity: sha512-24xqse6+VByVLIr+xWaQ9muX1B4bXJKXBbjszbld/UEDslGLY53+ZucF44HCmLbMPejTzGG9XgR+3m2/Wqu1kw==}
     dependencies:
@@ -1754,6 +1785,10 @@ packages:
       remove-accents: 0.4.2
     dev: false
 
+  /memoize-one@5.2.1:
+    resolution: {integrity: sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==}
+    dev: false
+
   /merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
@@ -1907,6 +1942,17 @@ packages:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
 
+  /react-data-grid@7.0.0-beta.40(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-2jgF56UfmHL9LhZ4teB+qR1WzAGGq3SL1ux8heiTYR8k8gQM1NFww6+EgKRlSU9fVR9yx+k/w3b6Y9aa+NpW0g==}
+    peerDependencies:
+      react: ^18.0
+      react-dom: ^18.0
+    dependencies:
+      clsx: 2.0.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /react-dom@18.2.0(react@18.2.0):
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
     peerDependencies:
@@ -1945,6 +1991,20 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: false
 
+  /react-konva-utils@1.0.5(konva@9.2.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-MQco0bre5ohm2lS34wAr/QJgT5PCnKbS3V1/aeYDldc8mq5X1UwcjxZWSL7YxGw3jQSHOm6XyX0YgLXQYUWBuQ==}
+    peerDependencies:
+      konva: ^8.3.5 || ^9.0.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      konva: 9.2.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-konva: 18.2.10(konva@9.2.1)(react-dom@18.2.0)(react@18.2.0)
+      use-image: 1.1.1(react-dom@18.2.0)(react@18.2.0)
+    dev: false
+
   /react-konva@18.2.10(konva@9.2.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-ohcX1BJINL43m4ynjZ24MxFI1syjBdrXhqVxYVDw2rKgr3yuS0x/6m1Y2Z4sl4T/gKhfreBx8KHisd0XC6OT1g==}
     peerDependencies:
@@ -1959,6 +2019,10 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-reconciler: 0.29.0(react@18.2.0)
       scheduler: 0.23.0
+    dev: false
+
+  /react-lifecycles-compat@3.0.4:
+    resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
     dev: false
 
   /react-reconciler@0.29.0(react@18.2.0):
@@ -2005,6 +2069,35 @@ packages:
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-virtualized@9.22.5(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-YqQMRzlVANBv1L/7r63OHa2b0ZsAaDp1UhVNEdUaXI8A5u6hTpA5NYtUueLH2rFuY/27mTGIBl7ZhqFKzw18YQ==}
+    peerDependencies:
+      react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
+      react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.23.1
+      clsx: 1.2.1
+      dom-helpers: 5.2.1
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-lifecycles-compat: 3.0.4
+    dev: false
+
+  /react-window@1.8.9(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-+Eqx/fj1Aa5WnhRfj9dJg4VYATGwIUP2ItwItiJ6zboKWA6EX3lYDAXfGF2hyNqplEprhbtjbipiADEcwQ823Q==}
+    engines: {node: '>8.0.0'}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.23.1
+      memoize-one: 5.2.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -2228,6 +2321,16 @@ packages:
     dependencies:
       punycode: 2.3.0
     dev: true
+
+  /use-image@1.1.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-n4YO2k8AJG/BcDtxmBx8Aa+47kxY5m335dJiCQA5tTeVU4XdhrhqR6wT0WISRXwdMEOv5CSjqekDZkEMiiWaYQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /vite@4.4.11:
     resolution: {integrity: sha512-ksNZJlkcU9b0lBwAGZGGaZHCMqHsc8OpgtoYhsQ4/I2v5cnpmmmqe5pM4nv/4Hn6G/2GhTdj0DhZh2e+Er1q5A==}

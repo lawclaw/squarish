@@ -11,7 +11,7 @@ interface GridCanvasProps {
 
 const GridCanvas: React.FC<GridCanvasProps> = ({grid, cellSize, borderSize, width, height}) => {
     return (
-        <Stage draggable={true} width={width} height={height} style={{marginLeft:(innerWidth - width) / 2}}>
+        <Stage draggable={true} width={width} height={height} style={{marginLeft: (innerWidth - width) / 2}}>
             <Layer>
                 {grid.map((row, rowIndex) =>
                     row.map((color, colIndex) => (

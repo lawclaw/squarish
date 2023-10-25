@@ -7,6 +7,7 @@ import GridCanvas from '../components/GridCanvas.tsx';
 import ButtonAppBar from '../components/ButtonAppBar.tsx';
 import BasicSpeedDial from '../components/BasicSpeedDial.tsx';
 import Grid from "@mui/system/Unstable_Grid";
+import VirtualGrid from "../components/VirtualGrid.tsx";
 
 const gridSize = 100;
 
@@ -38,9 +39,10 @@ function HomePage() {
                     <ButtonAppBar/>
                 </Grid>
                 <Grid xs={12}>
-                    <GridCanvas width={innerWidth - (innerWidth * 0.2)} height={innerHeight} borderSize={0.5}
-                                grid={Array.from(Array(gridSize), _ => Array(gridSize).fill('white'))}
-                                cellSize={10}/>
+                    {/*<GridCanvas width={innerWidth - (innerWidth * 0.2)} height={innerHeight} borderSize={0.5}*/}
+                    {/*            grid={Array.from(Array(gridSize), _ => Array(gridSize).fill('white'))}*/}
+                    {/*            cellSize={10}/>*/}
+                    <VirtualGrid/>
                     <BasicSpeedDial/>
                 </Grid>
             </Grid>
