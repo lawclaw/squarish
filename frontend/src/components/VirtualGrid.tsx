@@ -1,6 +1,8 @@
 import {FixedSizeGrid} from 'react-window';
 import '../css/HomePage.css'
 import * as React from "react";
+import {useState} from "react";
+import {Popover} from "@mui/material";
 
 const cellSize = 50; // Size of each grid cell
 const gridSize = 1000; // Size of the grid
@@ -10,7 +12,7 @@ const initialData = Array.from({length: gridSize}, () =>
 );
 
 const VirtualGrid: React.FC = () => {
-
+    const [open, setOpen] = useState<boolean>(false)
     const width = window.innerWidth - 200
     const getCellStyle = (rowIndex: number, columnIndex: number) => ({
         width: `${cellSize}px`,
@@ -32,8 +34,13 @@ const VirtualGrid: React.FC = () => {
                 height={window.innerHeight}
             >
                 {({columnIndex, rowIndex, style}) => (
-                    <div style={{...style, ...getCellStyle(rowIndex, columnIndex)}}>
-                    </div>
+                    <>
+                        <div style={{...style, ...getCellStyle(rowIndex, columnIndex)}} onClick={() => {
+                            console.log(rowIndex, columnIndex)
+                            setOpen(true)
+                        }}>
+                        </div>
+                    </>
                 )}
             </FixedSizeGrid>
         </div>

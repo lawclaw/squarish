@@ -7,6 +7,7 @@ import {createTheme, ThemeOptions, ThemeProvider} from "@mui/material/styles";
 import {CssBaseline} from "@mui/material";
 import SignupPage from "./pages/SignupPage.tsx";
 import VirtualGrid from "./components/VirtualGrid.tsx";
+import GridCanvas from "./components/GridCanvas.tsx";
 
 const router = createBrowserRouter([
     {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/test',
-        element: <VirtualGrid width={100} height={100}/>
+        element: <GridCanvas/>
     }
 ])
 
