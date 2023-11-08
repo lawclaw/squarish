@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage.tsx";
 import {createTheme, ThemeOptions, ThemeProvider} from "@mui/material/styles";
 import {CssBaseline} from "@mui/material";
 import SignupPage from "./pages/SignupPage.tsx";
-import VirtualGrid from "./components/VirtualGrid.tsx";
 import GridCanvas from "./components/GridCanvas.tsx";
 
 const router = createBrowserRouter([

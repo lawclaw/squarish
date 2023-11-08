@@ -1,10 +1,8 @@
 import bcrypt
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import create_access_token, set_access_cookies
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, set_access_cookies, unset_jwt_cookies, get_jwt_identity, \
+    jwt_required
 from flask_socketio import SocketIO, emit
 
 from database_operations import user_exists, get_user, add_user
@@ -24,13 +22,13 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 @app.route('/api/signup', methods=['POST'])
 def signup():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-
-    print(email, password)
-
+    email = str(request.json.get("email", None))
+    password = str(request.json.get("password", None))
+    print(len(email))
     if user_exists(email):
         return jsonify({"message": f"User {email} already exists, please log in!"}), 409
+    elif len(email) == 0 or len(password) == 0:
+        return jsonify({"message": f"Invalid credentials"}), 400
     else:
         hashed_pass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         add_user(email, hashed_pass)
@@ -77,6 +75,14 @@ def protected():
 @jwt_required()
 def testCookie():
     return jsonify({'msg': "logged in"})
+
+
+@app.route('/api/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    resp = jsonify({'logout': True})
+    unset_jwt_cookies(resp)
+    return resp, 200
 
 
 @app.route('/')
