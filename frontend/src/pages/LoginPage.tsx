@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {fetchToken} from "../service/ApiCalls.ts";
 
 const LoginPage = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,6 +20,8 @@ const LoginPage = () => {
             email: data.get('email'),
             password: data.get('password'),
         });
+
+        fetchToken(data.get('email'), data.get('password'))
     };
 
     return (

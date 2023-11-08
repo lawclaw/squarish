@@ -9,15 +9,15 @@ def generate_db_token():
     return response.json()['token']
 
 
-def user_exists(username):
-    if get_user(username):
+def user_exists(email):
+    if get_user(email):
         return True
     else:
         return False
 
 
-def get_user(username):
-    url = dbUrl + f"/api/collections/users/records?filter=(username='{username}')"
+def get_user(email):
+    url = dbUrl + f"/api/collections/users/records?filter=(email='{email}')"
     db_token = generate_db_token()
     # check if username exists
     response = requests.get(url, headers={'Authorization': 'Bearer {}'.format(db_token)})
@@ -27,11 +27,11 @@ def get_user(username):
         return None
 
 
-def add_user(username, password):
+def add_user(email, password):
     url = dbUrl + '/api/collections/users/records'
     db_token = generate_db_token()
     print(db_token)
     response = requests.post(url, headers={'Authorization': 'Bearer {}'.format(db_token)},
-                             json={'username': username, 'password': str(password)})
+                             json={'email': email, 'password': str(password)})
 
     print(response.json())
