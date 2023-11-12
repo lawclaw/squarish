@@ -4,35 +4,8 @@ export const getCookie = (name: string): string | undefined => { // https://stac
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-export const fetchToken = (email: FormDataEntryValue | null, password: FormDataEntryValue | null) => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
 
-    const raw = JSON.stringify({
-        "email": email,
-        "password": password
-    });
-
-    const requestOptions: RequestInit = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        mode: 'cors',
-        redirect: 'follow',
-        credentials: 'include'
-    };
-    fetch("http://localhost:3030/api/login", requestOptions)
-        .then(response => {
-            if (response.ok) {
-                window.location.href = '/'
-                //logout()
-            } else {
-                alert("NOT OK")
-            }
-        })
-        .catch(error => console.log('error', error));
-}
-
+const hostName = 'http://localhost:3030/api'
 export const signup = async (email: FormDataEntryValue | null, password: FormDataEntryValue | null) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -49,9 +22,9 @@ export const signup = async (email: FormDataEntryValue | null, password: FormDat
         redirect: 'follow'
     };
 
-    const res = await fetch("http://127.0.0.1:3030/api/signup", requestOptions);
+    const res = await fetch(new URL(hostName + "/auth/signup"), requestOptions);
     if (res.ok) {
-        fetchToken(email, password);
+        login(email, password);
     } else {
         // TODO: Do something for UI when wrong info? or we can handle validation on client side?
         const json = await res.json()
@@ -59,6 +32,36 @@ export const signup = async (email: FormDataEntryValue | null, password: FormDat
     }
 
 }
+export const login = (email: FormDataEntryValue | null, password: FormDataEntryValue | null) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "email": email,
+        "password": password
+    });
+
+    const requestOptions: RequestInit = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        mode: 'cors',
+        redirect: 'follow',
+        credentials: 'include'
+    };
+    fetch(new URL(hostName + "/auth/login"), requestOptions)
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/'
+                //logout()
+            } else {
+                alert("NOT OK")
+            }
+        })
+        .catch(error => console.log('error', error));
+}
+
+
 
 export const logout = async () => {
     const myHeaders = new Headers();
@@ -71,6 +74,6 @@ export const logout = async () => {
         mode: 'cors',
         credentials: 'include'
     };
-    const res = await fetch("http://localhost:3030/api/logout", requestOptions)
+    const res = await fetch(new URL(hostName + "/auth/logout"), requestOptions)
     return res.ok
 }

@@ -1,88 +1,43 @@
-import bcrypt
-from flask import Flask, request, jsonify
+import os
+
+from dotenv import load_dotenv
+from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, set_access_cookies, unset_jwt_cookies, get_jwt_identity, \
+from flask_jwt_extended import JWTManager, get_jwt_identity, \
     jwt_required
 from flask_socketio import SocketIO, emit
 
-from database_operations import user_exists, get_user, add_user
+from blueprints.auth_blueprint import auth_blueprint
+from blueprints.grid_blueprint import grid_blueprint
+
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'GNJFDGJ'
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+
+# Config
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY')  # Change this!
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 
 jwt = JWTManager(app)
-
 CORS(app, supports_credentials=True)
-
 socketio = SocketIO(app, cors_allowed_origins='*')
 
+# Blueprints
+api_blueprint = Blueprint('api', __name__, url_prefix='/api')
+api_blueprint.register_blueprint(auth_blueprint)
+api_blueprint.register_blueprint(grid_blueprint)
 
-@app.route('/api/signup', methods=['POST'])
-def signup():
-    email = str(request.json.get("email", None))
-    password = str(request.json.get("password", None))
-    print(len(email))
-    if user_exists(email):
-        return jsonify({"message": f"User {email} already exists, please log in!"}), 409
-    elif len(email) == 0 or len(password) == 0:
-        return jsonify({"message": f"Invalid credentials"}), 400
-    else:
-        hashed_pass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        add_user(email, hashed_pass)
-        return "200"
+app.register_blueprint(api_blueprint)
 
 
-# Create a route to authenticate your users and return JWTs. The
-# create_access_token() function is used to actually generate the JWT.
-@app.route("/api/login", methods=["POST"])
-def login():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-    if not user_exists(email):
-        return jsonify({"message": f"Invalid email or password"}), 404
-
-    user = get_user(email)
-    stored_password = user['password'].encode('utf-8')
-
-    # pass check using hashing
-    correct_password = stored_password == bcrypt.hashpw(password.encode('utf-8'), stored_password)
-
-    if correct_password:
-        access_token = create_access_token(identity=email)
-        response = jsonify(access_token=access_token)
-        set_access_cookies(response, access_token)
-        return response, 200
-    else:
-        return jsonify({"message": f"Invalid username or password"}), 404
-
-
-# Protect a route with jwt_required, which will kick out requests
-# without a valid JWT present.
-@app.route("/api/protected", methods=["GET"])
+@app.route("/test/protected", methods=["GET"])
 @jwt_required()
 def protected():
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
-
-
-# End Jwt
-
-@app.route('/api/user', methods=['POST', 'GET'])
-@jwt_required()
-def testCookie():
-    return jsonify({'msg': "logged in"})
-
-
-@app.route('/api/logout', methods=['POST'])
-@jwt_required()
-def logout():
-    resp = jsonify({'logout': True})
-    unset_jwt_cookies(resp)
-    return resp, 200
 
 
 @app.route('/')
@@ -93,6 +48,8 @@ def hello_world():  # put application's code here
 @socketio.on('connect')
 def connect():
     print(request.sid, 'connect')
+
+    print('lol')
     emit('test', {'data': f'id: {request.sid} is connected'})
 
 
