@@ -1,10 +1,3 @@
-export const getCookie = (name: string): string | undefined => { // https://stackoverflow.com/a/15724300
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
-
 const hostName = 'http://localhost:3030/api'
 export const signup = async (email: FormDataEntryValue | null, password: FormDataEntryValue | null) => {
     const myHeaders = new Headers();
@@ -32,7 +25,7 @@ export const signup = async (email: FormDataEntryValue | null, password: FormDat
     }
 
 }
-export const login = (email: FormDataEntryValue | null, password: FormDataEntryValue | null) => {
+export const login = async (email: FormDataEntryValue | null, password: FormDataEntryValue | null) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -49,31 +42,28 @@ export const login = (email: FormDataEntryValue | null, password: FormDataEntryV
         redirect: 'follow',
         credentials: 'include'
     };
-    fetch(new URL(hostName + "/auth/login"), requestOptions)
-        .then(response => {
-            if (response.ok) {
-                window.location.href = '/'
-                //logout()
-            } else {
-                alert("NOT OK")
-            }
-        })
-        .catch(error => console.log('error', error));
+    const response = await fetch(new URL(hostName + "/auth/login"), requestOptions);
+    const json = await response.json();
+    if (response.ok) {
+        localStorage.setItem('access_token', json['access_token']);
+        window.location.href = '/'
+    }
 }
 
 
 
-export const logout = async () => {
-    const myHeaders = new Headers();
-    myHeaders.append("X-CSRF-TOKEN", getCookie("csrf_access_token") ?? '') //https://stackoverflow.com/a/72438432
-
-    const requestOptions: RequestInit = {
-        method: 'POST',
-        headers: myHeaders,
-        redirect: 'follow',
-        mode: 'cors',
-        credentials: 'include'
-    };
-    const res = await fetch(new URL(hostName + "/auth/logout"), requestOptions)
-    return res.ok
-}
+// TODO: Fix logout on server side (either implement token invalidation etc)
+// export const logout = async () => {
+//     const myHeaders = new Headers();
+//     myHeaders.append("X-CSRF-TOKEN", getCookie("csrf_access_token") ?? '') //https://stackoverflow.com/a/72438432
+//
+//     const requestOptions: RequestInit = {
+//         method: 'POST',
+//         headers: myHeaders,
+//         redirect: 'follow',
+//         mode: 'cors',
+//         credentials: 'include'
+//     };
+//     const res = await fetch(new URL(hostName + "/auth/logout"), requestOptions)
+//     return res.ok
+// }

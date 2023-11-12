@@ -3,7 +3,7 @@ import os
 import re
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, Blueprint
+from flask import Flask, jsonify, Blueprint, make_response
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, get_jwt_identity, \
     jwt_required
@@ -20,8 +20,6 @@ app = Flask(__name__)
 # Config
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY')  # Change this!
-app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 
 jwt = JWTManager(app)
 CORS(app, supports_credentials=True)
@@ -30,7 +28,6 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 # Blueprints
 api_blueprint = Blueprint('api', __name__, url_prefix='/api')
 api_blueprint.register_blueprint(auth_blueprint)
-api_blueprint.register_blueprint(grid_blueprint)
 
 app.register_blueprint(api_blueprint)
 
@@ -48,19 +45,20 @@ def hello_world():  # put application's code here
     return 'Hello World!'
 
 
-
-
 initial_grid_data = get_grid()
 grid = json.loads(initial_grid_data['grid'])
 grid_id = initial_grid_data['id']
 
-room = {
-    'members': 0,
-    'grid': grid,
-}
-@socketio.on('color_change')
-def test(data):
-    print(data)
+@socketio.on('change_color')
+@jwt_required(optional=True)
+def change_color(data):
+
+    # JWT verification
+    jwt = get_jwt_identity()
+    if jwt is None:
+        emit('change_color', {'message':'User not authenticated', 'code': 401})
+        return make_response('N/A'), 401
+
     row = data['row']
     col = data['col']
     color = data['color']
@@ -75,29 +73,25 @@ def test(data):
         return
 
     # Write to local grid
-    print('Before', grid[0][0])
 
     grid[row][col] = color
-
-    print('After', grid[0][0])
 
     # Write to DB
     response = change_grid_square(grid, grid_id)
 
     # Emit to other clients
-    emit('test', data, broadcast=True, include_self=False)
+    emit('change_color', data, broadcast=True, include_self=False)
 
 
-# TODO: Websocket auth since cookies dont work for it
 @socketio.on('connect')
 def connect():
+    emit('connected', json.dumps(grid))
     pass
 
 
 @socketio.on('disconnect')
 def disconnect():
     pass
-
 
 
 if __name__ == '__main__':

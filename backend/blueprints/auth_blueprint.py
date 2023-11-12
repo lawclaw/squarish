@@ -37,9 +37,7 @@ def login():
 
     if correct_password:
         access_token = create_access_token(identity=email)
-        response = jsonify(access_token=access_token)
-        set_access_cookies(response, access_token)
-        return response, 200
+        return jsonify(access_token=access_token), 200
     else:
         return jsonify({"message": f"Invalid username or password"}), 404
 
@@ -48,5 +46,4 @@ def login():
 @jwt_required()
 def logout():
     resp = jsonify({'logout': True})
-    unset_jwt_cookies(resp)
     return resp, 200
