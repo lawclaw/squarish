@@ -6,8 +6,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import {Button} from "@mui/material";
 import {getCookie, logout} from "../service/ApiCalls.ts";
+import {Socket} from "socket.io-client";
 
-export default function ButtonAppBar() {
+export interface ButtonAppBarProps {
+    socketio: Socket<any, any> | undefined;
+}
+
+export default function ButtonAppBar(props: ButtonAppBarProps) {
     const [loggedIn, setLoggedIn] = useState<boolean>(getCookie('csrf_access_token') !== undefined);
     if (loggedIn) {
         return (
@@ -35,6 +40,9 @@ export default function ButtonAppBar() {
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                             place
                         </Typography>
+                        <Button variant={"contained"} onClick={() => {
+                            props.socketio?.emit('test', {'row': 0, 'col': 0, 'color':'#123222'})
+                        }}>Send message</Button>
                         <Button href={'/login'} variant={"contained"}>Login</Button>
                     </Toolbar>
                 </AppBar>

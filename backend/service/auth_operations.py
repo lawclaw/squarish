@@ -18,5 +18,5 @@ def get_user(email):
 
 def add_user(email, password):
     endpoint = '/users/records'
-    response = db_request(endpoint, {'email': email, 'password': str(password)})
+    response = db_request(endpoint, method='POST', json={'email': email, 'password': str(password)})
     print(response.json())

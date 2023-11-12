@@ -9,9 +9,17 @@ baseUrl = os.getenv('DB_HOST_NAME') + '/api'
 dbUrl = baseUrl + '/collections'
 
 
-def db_request(endpoint, json=None):
+def db_request(endpoint, method=None, json=None):
+    if method is None:
+        method = 'GET'
     db_token = generate_db_token()
-    return requests.get(dbUrl + endpoint, headers={'Authorization': 'Bearer {}'.format(db_token)}, json=json)
+
+    if method == 'GET':
+        return requests.get(dbUrl + endpoint, headers={'Authorization': 'Bearer {}'.format(db_token)})
+    elif method == 'POST':
+        return requests.post(dbUrl + endpoint, headers={'Authorization': 'Bearer {}'.format(db_token)}, json=json)
+    elif method == 'PATCH':
+        return requests.patch(dbUrl + endpoint, headers={'Authorization': 'Bearer {}'.format(db_token)}, json=json)
 
 
 def generate_db_token():
