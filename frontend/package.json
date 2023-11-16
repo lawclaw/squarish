@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.12",
     "@mui/system": "^5.14.12",
+    "@types/node": "^20.9.0",
     "@types/react-virtualized": "^9.21.26",
     "@types/react-window": "^1.8.7",
     "konva": "^9.2.1",

@@ -1,8 +1,11 @@
-import {io} from "socket.io-client";
+import {io, Socket} from "socket.io-client";
 import {create} from 'zustand'
 
-export const useSocketStore = create((set) => {
-    let socket;
+export interface SocketStore {
+    grid: string[][]
+}
+export const useSocketStore = create<SocketStore>((set) => {
+    let socket: Socket;
     if (localStorage.getItem('access_token')) {
         socket = io('127.0.0.1:3030', {extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`}})
 

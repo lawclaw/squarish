@@ -3,6 +3,10 @@ html, body {
     margin: 0;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 
 .no-scrollbars {
     scrollbar-width: thin;
@@ -23,4 +27,8 @@ html, body {
 
 .no-scrollbars::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
+}
+
+.noHorizontalScrollBar {
+    overflow-x: hidden;
 }
