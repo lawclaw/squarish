@@ -20,3 +20,7 @@ def add_user(email, password):
     endpoint = '/users/records'
     response = db_request(endpoint, method='POST', json={'email': email, 'password': str(password)})
     print(response.json())
+
+
+def change_user(user):
+    response = db_request(f"/users/records/{user['id']}", 'PATCH', json=user)

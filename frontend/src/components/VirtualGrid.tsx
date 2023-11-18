@@ -26,7 +26,7 @@ const VirtualGrid: React.FC = () => {
     return (
         <div style={{height: '100vh', flex: '1'}}>
             <AutoSizer>
-                {({ height, width}) => (
+                {({height, width}) => (
                     grid.length !== 0 ?
                         (<FixedSizeGrid
                             className={'no-scrollbars'}
@@ -40,8 +40,10 @@ const VirtualGrid: React.FC = () => {
                             {({columnIndex, rowIndex, style}) => (
                                 <>
                                     <div style={{...style, ...getCellStyle(rowIndex, columnIndex)}} onClick={() => {
-                                        actions.changeColorLocal(rowIndex, columnIndex, selectedColor)
-                                        actions.changeColorGlobal(rowIndex, columnIndex, selectedColor)
+                                        if (grid[rowIndex][columnIndex] !== selectedColor) {
+                                            //actions.changeColorLocal(rowIndex, columnIndex, selectedColor)
+                                            actions.changeColorGlobal(rowIndex, columnIndex, selectedColor)
+                                        }
                                     }}>
                                     </div>
                                 </>

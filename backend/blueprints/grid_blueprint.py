@@ -2,8 +2,8 @@ import json
 import re
 
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import get_jwt_identity
 
-from flask_socketio import SocketIO, emit, join_room
 from service.grid_operations import get_grid, change_grid_square
 
 grid_blueprint = Blueprint('grid', __name__, url_prefix='/grid')
@@ -53,4 +53,5 @@ def change():
 
 @grid_blueprint.route('/test')
 def test():
+    print(get_jwt_identity())
     return 'hello nested grid'

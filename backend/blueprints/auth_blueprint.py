@@ -1,6 +1,6 @@
 import bcrypt
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 from service.auth_operations import user_exists, add_user, get_user
 
@@ -40,6 +40,14 @@ def login():
         return jsonify(access_token=access_token), 200
     else:
         return jsonify({"message": f"Invalid username or password"}), 404
+
+
+@auth_blueprint.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+def refresh():
+    identity = get_jwt_identity()
+    access_token = create_access_token(identity=identity)
+    return jsonify(access_token=access_token)
 
 
 @auth_blueprint.route('/logout', methods=['POST'])

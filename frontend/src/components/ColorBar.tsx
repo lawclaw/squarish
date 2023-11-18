@@ -52,23 +52,23 @@ const ColorBar = () => {
                         height: '6em',
                         borderRadius: 100,
                         bgcolor: selectedColor,
-                        filter: 'drop-shadow(2px 2px 1px #000000)',
+                        filter: 'drop-shadow(1px 1px 3px #000000)',
 
                     }}
                 />
             </Grid>
-            <Grid container spacing={3} sx={{overflow: 'scroll', maxHeight: '90vh'}} className={'no-scrollbars'}
+            <Grid container spacing={3} sx={{overflow: 'scroll', maxHeight: '80vh'}} className={'no-scrollbars'}
                   justifyContent="center" alignItems="center">
-                {colors.map((color) => {
+                {colors.map((color, index) => {
                     return (
-                        <Grid xs={12} display="flex" justifyContent="center" alignItems="center">
+                        <Grid xs={12} display="flex" justifyContent="center" alignItems="center" key={index}>
                             <Box
                                 sx={{
                                     width: '5em',
                                     height: '5em',
                                     borderRadius: 1,
                                     bgcolor: color,
-                                    filter: 'drop-shadow(2px 2px 1px #000000)',
+                                    filter: 'drop-shadow(1px 2px 1px #000000)',
                                     '&:active': {
                                         boxShadow: 'inset 1px 1px 30px 1px '
                                     },

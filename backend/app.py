@@ -1,17 +1,19 @@
 import json
+import json
 import os
 import re
+from datetime import timedelta, datetime
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, Blueprint, make_response
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, get_jwt_identity, \
     jwt_required
-from flask_socketio import SocketIO, leave_room, emit
+from flask_socketio import SocketIO, emit
 
 from blueprints.auth_blueprint import auth_blueprint
-from blueprints.grid_blueprint import grid_blueprint
-from service.grid_operations import get_grid, change_grid_square
+from service.auth_operations import get_user, change_user
+from service.grid_operations import get_grid, change_grid_square, get_last_changed
 
 load_dotenv()
 
@@ -20,6 +22,7 @@ app = Flask(__name__)
 # Config
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY')  # Change this!
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 
 jwt = JWTManager(app)
 CORS(app, supports_credentials=True)
@@ -49,19 +52,35 @@ initial_grid_data = get_grid()
 grid = json.loads(initial_grid_data['grid'])
 grid_id = initial_grid_data['id']
 
+
 @socketio.on('change_color')
 @jwt_required(optional=True)
 def change_color(data):
-
     # JWT verification
-    jwt = get_jwt_identity()
-    if jwt is None:
-        emit('change_color', {'message':'User not authenticated', 'code': 401})
+    email = get_jwt_identity()
+    if email is None:
+        emit('change_color', {'message': 'User not authenticated', 'code': 401})
+        return make_response('N/A'), 401
+
+    # Timeout
+    user = get_user(email)
+
+    if user is None:
+        emit('change_color', {'message': 'Invalid user'})
+        return make_response('N/A'), 401
+
+    last_changed = get_last_changed(user)
+
+    if last_changed != 0:
+        emit('change_color',
+             {'message': f'It has only been {last_changed} seconds since last edit', 'last_changed': last_changed})
         return make_response('N/A'), 401
 
     row = data['row']
     col = data['col']
     color = data['color']
+
+    print(row, col, color)
 
     if row is None or col is None or color is None:
         return
@@ -72,15 +91,18 @@ def change_color(data):
     if not bool(re.match(hex_regex, color)):
         return
 
+    # Update timeout
+    user['lastChanged'] = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S.%f')[:-3] + 'Z'
+    change_user(user)
+
+    # Emit to other clients
+    emit('change_color', data, broadcast=True)
     # Write to local grid
 
     grid[row][col] = color
 
     # Write to DB
-    response = change_grid_square(grid, grid_id)
-
-    # Emit to other clients
-    emit('change_color', data, broadcast=True, include_self=False)
+    change_grid_square(grid, grid_id)
 
 
 @socketio.on('connect')

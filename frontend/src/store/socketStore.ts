@@ -1,10 +1,13 @@
 import {io, Socket} from "socket.io-client";
 import {create} from 'zustand'
+import {isNumber} from "./utils.ts";
 
 export interface SocketStore {
     grid: string[][]
 }
-export const useSocketStore = create<SocketStore>((set) => {
+
+
+export const useSocketStore = create<SocketStore>((set, get) => {
     let socket: Socket;
     if (localStorage.getItem('access_token')) {
         socket = io('127.0.0.1:3030', {extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`}})
@@ -13,7 +16,7 @@ export const useSocketStore = create<SocketStore>((set) => {
         socket = io('127.0.0.1:3030')
     }
     socket.on("change_color", (data) => {
-        if (data['row'] && data['col'] && data['color']) {
+        if (isNumber(data['row']) && isNumber(data['col']) && data['color']) {
             changeColorLocal(data['row'], data['col'], data['color'])
         } else {
             console.warn(data)
