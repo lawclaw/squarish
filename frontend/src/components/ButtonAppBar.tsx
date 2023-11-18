@@ -4,12 +4,10 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import {Button, SvgIcon} from "@mui/material";
-import {useSocketStore} from "../store/socketStore.ts";
 import {useAuthStore} from "../store/authStore.ts";
 
 
 export default function ButtonAppBar() {
-    const actions = useSocketStore((state) => state.actions)
     const loggedIn = useAuthStore((state) => state.accessToken)
     const setAccessToken = useAuthStore(state => state.setAccessToken)
     return (

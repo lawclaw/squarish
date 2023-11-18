@@ -1,13 +1,17 @@
 import {io, Socket} from "socket.io-client";
-import {create} from 'zustand'
+import {create, StoreApi} from 'zustand'
 import {isNumber} from "./utils.ts";
 
 export interface SocketStore {
-    grid: string[][]
+    grid: string[][];
+    actions: {
+        changeColorLocal: (row: number, col: number, color: string) => void,
+        changeColorGlobal: (row: number, col: number, color: string) => void,
+    };
 }
 
 
-export const useSocketStore = create<SocketStore>((set, get) => {
+export const useSocketStore = create<SocketStore>((set: StoreApi<SocketStore>['setState']) => {
     let socket: Socket;
     if (localStorage.getItem('access_token')) {
         socket = io('127.0.0.1:3030', {extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`}})
@@ -25,7 +29,7 @@ export const useSocketStore = create<SocketStore>((set, get) => {
     })
 
     socket.on("connected", (data) => {
-        set((state) => ({grid: JSON.parse(data)}))
+        set(() => ({grid: JSON.parse(data)}))
     })
 
     socket.on("status", (data) => {

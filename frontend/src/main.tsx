@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage.tsx";
 import {createTheme, ThemeOptions, ThemeProvider} from "@mui/material/styles";
 import {CssBaseline} from "@mui/material";
 import SignupPage from "./pages/SignupPage.tsx";
-import GridCanvas from "./components/GridCanvas.tsx";
 
 const router = createBrowserRouter([
     {
@@ -21,10 +20,6 @@ const router = createBrowserRouter([
         path: '/signup',
         element: <SignupPage/>
     },
-    {
-        path: '/test',
-        element: <GridCanvas/>
-    }
 ])
 
 export const themeOptions: ThemeOptions = {
