@@ -14,10 +14,9 @@ export interface SocketStore {
 export const useSocketStore = create<SocketStore>((set: StoreApi<SocketStore>['setState']) => {
     let socket: Socket;
     if (localStorage.getItem('access_token')) {
-        socket = io('127.0.0.1:3030', {extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`}})
-
+        socket = io('0.0.0.0:3030', {withCredentials: true, extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`}})
     } else {
-        socket = io('127.0.0.1:3030')
+        socket = io('0.0.0.0:3030')
     }
     socket.on("change_color", (data) => {
         if (isNumber(data['row']) && isNumber(data['col']) && data['color']) {
