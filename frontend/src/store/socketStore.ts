@@ -14,7 +14,7 @@ export interface SocketStore {
 export const useSocketStore = create<SocketStore>((set: StoreApi<SocketStore>['setState']) => {
     let socket: Socket;
     if (localStorage.getItem('access_token')) {
-        socket = io('0.0.0.0:3030', {withCredentials: true, extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`}})
+        socket = io('0.0.0.0:3030', {withCredentials: true, extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`, 'Access-Control-Allow-Private-Network': 'true'}})
     } else {
         socket = io('0.0.0.0:3030')
     }
