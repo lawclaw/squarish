@@ -14,9 +14,9 @@ export interface SocketStore {
 export const useSocketStore = create<SocketStore>((set: StoreApi<SocketStore>['setState']) => {
     let socket: Socket;
     if (localStorage.getItem('access_token')) {
-        socket = io('http://146.176.251.242:3030', {withCredentials: true, extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`, 'Access-Control-Allow-Private-Network': 'true'}})
+        socket = io(':3030', {withCredentials: true, extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`, 'Access-Control-Allow-Private-Network': 'true'}})
     } else {
-        socket = io('http://146.176.251.242:3030')
+        socket = io(':3030')
     }
     socket.on("change_color", (data) => {
         if (isNumber(data['row']) && isNumber(data['col']) && data['color']) {
