@@ -1,5 +1,4 @@
 import json
-import json
 import os
 import re
 from datetime import timedelta, datetime
@@ -25,7 +24,7 @@ app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY')  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 
 jwt = JWTManager(app)
-CORS(app, supports_credentials=True, resources={r"/*":{"origins":"*"}})
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 # Blueprints
@@ -117,4 +116,4 @@ def disconnect():
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, port=3030, host='0.0.0.0')
+    socketio.run(app, debug=True, port=8080, host='0.0.0.0')

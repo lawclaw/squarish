@@ -1,4 +1,4 @@
-const hostName = 'http://146.176.251.242:3030/api'
+const hostName = 'http://0.0.0.0:8080/api'
 export const signup = async (email: FormDataEntryValue | null, password: FormDataEntryValue | null) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
