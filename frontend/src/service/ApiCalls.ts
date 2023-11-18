@@ -1,4 +1,4 @@
-const hostName = 'http://0.0.0.0:8080/api'
+const hostName = 'http://' + location.hostname +':8080/api'
 export const signup = async (email: FormDataEntryValue | null, password: FormDataEntryValue | null) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -15,7 +15,7 @@ export const signup = async (email: FormDataEntryValue | null, password: FormDat
         redirect: 'follow'
     };
 
-    const res = await fetch(new URL(hostName + "/auth/signup"), requestOptions);
+    const res = await fetch(hostName + "/auth/signup", requestOptions);
     if (res.ok) {
         login(email, password);
     } else {
@@ -42,14 +42,13 @@ export const login = async (email: FormDataEntryValue | null, password: FormData
         redirect: 'follow',
         credentials: 'include'
     };
-    const response = await fetch(new URL(hostName + "/auth/login"), requestOptions);
+    const response = await fetch(hostName + "/auth/login", requestOptions);
     const json = await response.json();
     if (response.ok) {
         localStorage.setItem('access_token', json['access_token']);
         window.location.href = '/'
     }
 }
-
 
 
 // TODO: Fix logout on server side (either implement token invalidation etc)
