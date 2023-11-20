@@ -11,11 +11,11 @@ const GridAlert = () => {
                   timeout={{
                       enter: 1000,
                       exit: 1000
-                  }} //Edit these two values to change the duration of transition when the element is getting appeared and disappeard
+                  }}
                   addEndListener={() => {
                       setTimeout(() => {
                             setErrorMessage('')
-                      }, 5000);
+                      }, 3000);
                   }}>
             <Alert
                 action={

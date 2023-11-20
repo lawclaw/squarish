@@ -1,27 +1,59 @@
-import {FixedSizeGrid} from 'react-window';
-import '../css/HomePage.css'
 import * as React from "react";
-import {useSocketStore} from "../store/socketStore.ts";
-import {Skeleton} from "@mui/material";
+import {FixedSizeGrid} from 'react-window';
+import {SquareChange, useSocketStore} from "../store/socketStore.ts";
+import {Box, Skeleton} from "@mui/material";
 import {AutoSizer} from "react-virtualized";
 import {useColorStore} from "../store/colorStore.ts";
+import {useCoordinatesStore} from '../store/coordinatesStore.ts';
+import '../css/HomePage.css'
+import { CSSProperties } from "react";
 
 const cellSize = 50; // Size of each grid cell
 const gridSize = 1000; // Size of the grid
 
+export interface GridSquareProps {
+    rowIndex: number;
+    columnIndex: number;
+    color: string;
+    style: CSSProperties;
+}
+
+
+const GridSquare = (props: GridSquareProps) => {
+    const selectedColor = useColorStore(state => state.selectedColor)
+    const actions = useSocketStore(state => state.actions)
+
+    const getCellStyle = React.useMemo(
+        () => () => ({
+            width: `${cellSize}px`,
+            height: `${cellSize}px`,
+            backgroundColor: props.color,
+            border: '1px solid gray',
+        }),
+        [props.color]
+    );
+    return (
+        <Box
+            style={{...props.style, ...getCellStyle()}}
+            onClick={() => {
+                console.log('clicks')
+                if (props.color !== selectedColor) {
+                    const change: SquareChange = {
+                        row: props.rowIndex,
+                        col: props.columnIndex,
+                        color: selectedColor
+                    }
+                    actions.changeColorLocal(change)
+                    actions.changeColorGlobal(change)
+                }
+            }}
+        />
+    );
+}
 
 const VirtualGrid: React.FC = () => {
-
     const grid = useSocketStore((state) => state.grid)
-    const actions = useSocketStore(state => state.actions)
-    const selectedColor = useColorStore(state => state.selectedColor)
-
-    const getCellStyle = (rowIndex: number, columnIndex: number) => ({
-        width: `${cellSize}px`,
-        height: `${cellSize}px`,
-        backgroundColor: grid[rowIndex][columnIndex],
-        border: '1px solid gray'
-    })
+    const setCoordinates = useCoordinatesStore(state => state.setCoordinates)
 
     return (
         <div style={{height: '100vh', flex: '1'}}>
@@ -38,15 +70,8 @@ const VirtualGrid: React.FC = () => {
                             height={height}
                         >
                             {({columnIndex, rowIndex, style}) => (
-                                <>
-                                    <div style={{...style, ...getCellStyle(rowIndex, columnIndex)}} onClick={() => {
-                                        if (grid[rowIndex][columnIndex] !== selectedColor) {
-                                            actions.changeColorLocal({row: rowIndex, col: columnIndex, color: selectedColor})
-                                            actions.changeColorGlobal({row: rowIndex, col: columnIndex, color: selectedColor})
-                                        }
-                                    }}>
-                                    </div>
-                                </>
+                                <GridSquare rowIndex={rowIndex} columnIndex={columnIndex}
+                                            color={grid[rowIndex][columnIndex]} style={style}/>
                             )}
                         </FixedSizeGrid>) : (
                             <Skeleton animation={'wave'} variant="rectangular" width={width}
@@ -58,7 +83,8 @@ const VirtualGrid: React.FC = () => {
 
         </div>
 
-    );
+    )
+        ;
 };
 
 export default VirtualGrid;
