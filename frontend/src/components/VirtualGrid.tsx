@@ -41,8 +41,8 @@ const VirtualGrid: React.FC = () => {
                                 <>
                                     <div style={{...style, ...getCellStyle(rowIndex, columnIndex)}} onClick={() => {
                                         if (grid[rowIndex][columnIndex] !== selectedColor) {
-                                            //actions.changeColorLocal(rowIndex, columnIndex, selectedColor)
-                                            actions.changeColorGlobal(rowIndex, columnIndex, selectedColor)
+                                            actions.changeColorLocal({row: rowIndex, col: columnIndex, color: selectedColor})
+                                            actions.changeColorGlobal({row: rowIndex, col: columnIndex, color: selectedColor})
                                         }
                                     }}>
                                     </div>

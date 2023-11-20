@@ -2,27 +2,47 @@ import {io, Socket} from "socket.io-client";
 import {create, StoreApi} from 'zustand'
 import {isNumber} from "./utils.ts";
 
+
+export interface SquareChange {
+    row: number;
+    col: number;
+    color: string;
+}
+
 export interface SocketStore {
     grid: string[][];
+    previousChange?: SquareChange;
+    errorMessage: string;
     actions: {
-        changeColorLocal: (row: number, col: number, color: string) => void,
-        changeColorGlobal: (row: number, col: number, color: string) => void,
+        changeErrorMessage: (message: string) => void;
+        changeColorLocal: (change: SquareChange) => void;
+        changeColorGlobal: (change: SquareChange) => void;
     };
 }
 
 
-export const useSocketStore = create<SocketStore>((set: StoreApi<SocketStore>['setState']) => {
+export const useSocketStore = create<SocketStore>((set: StoreApi<SocketStore>['setState'], get: StoreApi<SocketStore>['getState']) => {
     let socket: Socket;
     if (localStorage.getItem('access_token')) {
-        socket = io(':8080', {withCredentials: true, extraHeaders: {'Authorization': `Bearer ${localStorage.getItem('access_token')}`, 'Access-Control-Allow-Private-Network': 'true'}})
+        socket = io(':8080', {
+            withCredentials: true,
+            extraHeaders: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                'Access-Control-Allow-Private-Network': 'true'
+            }
+        })
     } else {
         socket = io(':8080')
     }
     socket.on("change_color", (data) => {
         if (isNumber(data['row']) && isNumber(data['col']) && data['color']) {
-            changeColorLocal(data['row'], data['col'], data['color'])
+            changeColorLocal({row: data['row'], col: data['col'], color: data['color']})
         } else {
-            console.warn(data)
+            changeErrorMessage(data.message)
+            changeColorLocal(get().previousChange)
+            set(() => {
+                return {previousChange: undefined}
+            })
         }
 
     })
@@ -35,21 +55,30 @@ export const useSocketStore = create<SocketStore>((set: StoreApi<SocketStore>['s
         console.log(data)
     })
 
-    const changeColorLocal = (row: number, col: number, color: string) => {
-        set((state) => {
-            const temp = JSON.parse(JSON.stringify(state.grid)) //dirty way to clone but works for now
-            temp[row][col] = color
-            return {grid: temp}
-        })
+    const changeErrorMessage = (message: string) => {
+        set(() => ({errorMessage: message}))
     }
-    const changeColorGlobal = (row: number, col: number, color: string) => {
-        socket.emit('change_color', {'row': row, 'col': col, 'color': color})
+
+    const changeColorLocal = (change?: SquareChange) => {
+        if (change) {
+            set((state) => {
+                const temp = JSON.parse(JSON.stringify(state.grid)) //dirty way to clone but works for now
+                temp[change.row][change.col] = change.color
+                return {grid: temp, previousChange: {row: change.row, col:change.col, color: state.grid[change.row][change.col]}}
+            })
+        }
+    }
+    const changeColorGlobal = (change: SquareChange) => {
+        socket.emit('change_color', change)
     }
 
 
     return {
         grid: [],
+        previousChange: undefined,
+        errorMessage: '',
         actions: {
+            changeErrorMessage: changeErrorMessage,
             changeColorLocal: changeColorLocal,
             changeColorGlobal: changeColorGlobal
         }

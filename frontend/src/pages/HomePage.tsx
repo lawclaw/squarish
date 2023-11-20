@@ -4,10 +4,10 @@ import ButtonAppBar from '../components/ButtonAppBar.tsx';
 import Grid from "@mui/system/Unstable_Grid";
 import VirtualGrid from "../components/VirtualGrid.tsx";
 import ColorBar from '../components/ColorBar.tsx';
-import {Alert, Collapse, IconButton} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import GridAlert from '../components/GridAlert.tsx';
 
 function HomePage() {
+
     return (
         <>
             <Grid container spacing={2}>
@@ -19,26 +19,8 @@ function HomePage() {
                     <ColorBar/>
                 </Grid>
                 <Grid xs={11}>
-                    <Collapse in={true}>
-                        <Alert
-                            action={
-                                <IconButton
-                                    aria-label="close"
-                                    color="inherit"
-                                    size="small"
-                                    onClick={() => {
-                                    }}
-                                >
-                                    <CloseIcon fontSize="inherit"/>
-                                </IconButton>
-                            }
-                            sx={{mb: 2}}
-                        >
-                            Close me!
-                        </Alert>
-                    </Collapse>
+                    <GridAlert/>
                     <VirtualGrid/>
-
                 </Grid>
             </Grid>
         </>

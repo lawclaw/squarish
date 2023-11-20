@@ -72,7 +72,7 @@ def change_color(data):
 
     if last_changed != 0:
         emit('change_color',
-             {'message': f'It has only been {last_changed} seconds since last edit', 'last_changed': last_changed})
+             {'message': f'You can change a square in {round(300 - last_changed)} seconds', 'last_changed': last_changed})
         return make_response('N/A'), 401
 
     row = data['row']
@@ -94,10 +94,11 @@ def change_color(data):
     user['lastChanged'] = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S.%f')[:-3] + 'Z'
     change_user(user)
 
-    # Emit to other clients
-    emit('change_color', data, broadcast=True)
-    # Write to local grid
 
+    # Emit to other clients
+    emit('change_color', data, broadcast=True, include_self=False)
+
+    # Write to local grid
     grid[row][col] = color
 
     # Write to DB
