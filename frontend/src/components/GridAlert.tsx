@@ -15,9 +15,10 @@ const GridAlert = () => {
                   addEndListener={() => {
                       setTimeout(() => {
                             setErrorMessage('')
-                      }, 3000);
+                      }, 30000);
                   }}>
             <Alert
+                severity={'error'}
                 action={
                     <IconButton
                         aria-label="close"

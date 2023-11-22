@@ -1,16 +1,14 @@
 import * as React from "react";
+import {CSSProperties} from "react";
 import {FixedSizeGrid} from 'react-window';
 import {SquareChange, useSocketStore} from "../store/socketStore.ts";
 import {Box, Skeleton} from "@mui/material";
 import {AutoSizer} from "react-virtualized";
 import {useColorStore} from "../store/colorStore.ts";
-import {useCoordinatesStore} from '../store/coordinatesStore.ts';
 import '../css/HomePage.css'
-import { CSSProperties } from "react";
 
-const cellSize = 50; // Size of each grid cell
 const gridSize = 1000; // Size of the grid
-
+const cellSize = 20;
 export interface GridSquareProps {
     rowIndex: number;
     columnIndex: number;
@@ -21,6 +19,7 @@ export interface GridSquareProps {
 
 const GridSquare = (props: GridSquareProps) => {
     const selectedColor = useColorStore(state => state.selectedColor)
+    const setSelectedColor = useColorStore(state => state.setSelectedColor);
     const actions = useSocketStore(state => state.actions)
 
     const getCellStyle = React.useMemo(
@@ -32,11 +31,22 @@ const GridSquare = (props: GridSquareProps) => {
         }),
         [props.color]
     );
+    const getHoverActiveStyle = React.useMemo(
+        () => () => ({
+            '&:hover': {
+                boxShadow: '5px 5px 20px 0px rgba(32,70,158,0.3) inset'
+            },
+            '&:active': {
+                boxShadow: '5px 5px 20px 0px rgba(32,70,158,1) inset'
+            },
+        }),
+        []
+    );
     return (
         <Box
+            sx={[getHoverActiveStyle()]}
             style={{...props.style, ...getCellStyle()}}
             onClick={() => {
-                console.log('clicks')
                 if (props.color !== selectedColor) {
                     const change: SquareChange = {
                         row: props.rowIndex,
@@ -47,13 +57,20 @@ const GridSquare = (props: GridSquareProps) => {
                     actions.changeColorGlobal(change)
                 }
             }}
+            onContextMenu={(e) => {
+                e.preventDefault()
+                console.log('right')
+                if (props.color !== selectedColor) {
+                    setSelectedColor(props.color)
+                }
+            }}
         />
     );
 }
 
 const VirtualGrid: React.FC = () => {
     const grid = useSocketStore((state) => state.grid)
-    const setCoordinates = useCoordinatesStore(state => state.setCoordinates)
+    //const setCoordinates = useCoordinatesStore(state => state.setCoordinates)
 
     return (
         <div style={{height: '100vh', flex: '1'}}>
@@ -83,8 +100,7 @@ const VirtualGrid: React.FC = () => {
 
         </div>
 
-    )
-        ;
+    );
 };
 
 export default VirtualGrid;
