@@ -68,12 +68,12 @@ def change_color(data):
         emit('change_color', {'message': 'Invalid user'})
         return make_response('N/A'), 401
 
-    # last_changed = get_last_changed(user)
-    #
-    # if last_changed != 0:
-    #     emit('change_color',
-    #          {'message': f'You can change a square in {round(300 - last_changed)} seconds', 'last_changed': last_changed})
-    #     return make_response('N/A'), 401
+    last_changed = get_last_changed(user)
+
+    if last_changed != 0:
+        emit('change_color',
+             {'message': f'You can change a square in {round(300 - last_changed)} seconds', 'last_changed': last_changed})
+        return make_response('N/A'), 401
 
     row = data['row']
     col = data['col']

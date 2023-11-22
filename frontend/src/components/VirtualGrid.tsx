@@ -73,12 +73,12 @@ const VirtualGrid: React.FC = () => {
     //const setCoordinates = useCoordinatesStore(state => state.setCoordinates)
 
     return (
-        <div style={{height: '100vh', flex: '1'}}>
+        <div style={{height: '89vh', flex: '1'}}>
             <AutoSizer>
                 {({height, width}) => (
                     grid.length !== 0 ?
                         (<FixedSizeGrid
-                            className={'no-scrollbars'}
+                            //className={'no-scrollbars'}
                             columnCount={gridSize}
                             rowCount={gridSize}
                             columnWidth={cellSize}
