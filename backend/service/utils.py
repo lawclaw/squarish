@@ -1,4 +1,3 @@
-import json
 import os
 
 import requests
@@ -27,4 +26,3 @@ def generate_db_token():
     url = baseUrl + '/admins/auth-with-password'
     response = requests.post(url, data={'identity': os.getenv('DB_EMAIL'), 'password': os.getenv('DB_PASSWORD')})
     return response.json()['token']
-

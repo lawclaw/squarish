@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 from service.utils import db_request
-from flask_jwt_extended import get_jwt_identity
+
 
 def add_grid(grid, name='home'):
     endpoint = '/grids/records'
@@ -36,4 +36,3 @@ def get_last_changed(user):
         return diff.total_seconds()
 
     return 0
-
