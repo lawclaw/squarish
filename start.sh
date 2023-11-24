@@ -13,4 +13,4 @@ kill -9 "$DBPID"
 
 # Start processes
 
-./db/pocketbase serve & source backend/venv/bin/activate & python ./backend/app.py & pnpm --prefix ./frontend run dev
+./db/pocketbase serve & source backend/venv/bin/activate & python ./backend/app.py & pnpm --prefix ./frontend run preview --host --port 5173
