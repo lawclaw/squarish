@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {login} from "../service/ApiCalls.ts";
 
-const LoginPage = () => {
+const LoginPage = () => { //https://mui.com/material-ui/getting-started/templates/
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -64,9 +64,6 @@ const LoginPage = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
                         </Grid>
                         <Grid item>
                             <Link href="/signup" variant="body2">

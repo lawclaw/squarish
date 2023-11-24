@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {signup} from '../service/ApiCalls';
 
-const SignupPage = () => {
+const SignupPage = () => { //https://mui.com/material-ui/getting-started/templates/
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

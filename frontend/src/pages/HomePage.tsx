@@ -22,17 +22,6 @@ function HomePage() {
                 <Grid xs={11}>
                     <GridAlert/>
                     <VirtualGrid/>
-                    {/*<Canvas canvasHeight={250} canvasWidth={500}/>*/}
-                    <Box sx={{
-                        position: 'absolute',
-                        bottom: 40,
-                        right: 50,
-                        fontSize: '2em',
-                        background: 'grey',
-                        borderRadius: '20%'
-                    }} p={2}>
-                        {`${coordinates.row} ${coordinates.col}`}
-                    </Box>
                 </Grid>
             </Grid>
         </>
