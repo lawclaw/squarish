@@ -10,7 +10,8 @@ kill -9 "$FLASKPID"
 DBPID=$(lsof -t -i :8090 -s TCP:LISTEN)
 kill -9 "$DBPID"
 
+source backend/venv/bin/activate
 
 # Start processes
 
-./db/pocketbase serve & source backend/venv/bin/activate & python ./backend/app.py & pnpm --prefix ./frontend run preview --host --port 5173
+./db/pocketbase serve & python ./backend/app.py & pnpm --prefix ./frontend run preview --host --port 5173
