@@ -1,23 +1,23 @@
-\clearpage
-
-\section{Technologies}\label{sec:technologies}
-
-\subsection{Client-side (front-end)}\label{subsec:client-side-(front-end)}
-
-For the client-side/front-end, React will most likely be used to design the UI.
-
-As for Websocket communication, the Socket.io library will be used configure and interact with the sessions between the server and client.
-
-\subsection{Server-side (back-end)}\label{subsec:server-side-(back-end)}
-
-On the back-end a Python Flask server will be used to handle requests from the front-end.
-To create a Websocket route in Flask, the \href{https://flask-socketio.readthedocs.io/}{Flask-SocketIO} library will be used.
-
-\section{Data}\label{sec:data}
-
-In the initial version of the application, the only persistent data is the canvas.
-Storing a $n\times n$ grid can be done easily with an n-dimensional array, that can then either be serialized and stored in a discrete file or in a database.
-
-For further extensions such as the login system, a database will likely be needed to track the users credentials.
-This would also raise a security concern as credentials are sensitive information that need to be handled correctly, both in transit and at rest.
-Complexities such as how to store the data and how to encrypt the data will have to be decided and implemented at that stage.
+%\clearpage
+%
+%\section{Technologies}\label{sec:technologies}
+%
+%\subsection{Client-side (front-end)}\label{subsec:client-side-(front-end)}
+%
+%For the client-side/front-end, React will most likely be used to design the UI.
+%
+%As for Websocket communication, the Socket.io library will be used configure and interact with the sessions between the server and client.
+%
+%\subsection{Server-side (back-end)}\label{subsec:server-side-(back-end)}
+%
+%On the back-end a Python Flask server will be used to handle requests from the front-end.
+%To create a Websocket route in Flask, the \href{https://flask-socketio.readthedocs.io/}{Flask-SocketIO} library will be used.
+%
+%\section{Data}\label{sec:data}
+%
+%In the initial version of the application, the only persistent data is the canvas.
+%Storing a $n\times n$ grid can be done easily with an n-dimensional array, that can then either be serialized and stored in a discrete file or in a database.
+%
+%For further extensions such as the login system, a database will likely be needed to track the users credentials.
+%This would also raise a security concern as credentials are sensitive information that need to be handled correctly, both in transit and at rest.
+%Complexities such as how to store the data and how to encrypt the data will have to be decided and implemented at that stage.

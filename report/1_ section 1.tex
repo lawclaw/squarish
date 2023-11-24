@@ -1,8 +1,10 @@
 \externaldocument{appendices/appendix}
 
+
 \section{Introduction}\label{sec:introduction}
 
 This coursework part will discuss the implementation of recreating /r/place, an event and project made by \href{https://www.reddit.com/}{Reddit.com}, a discussion board website.
+
 
 \section{Implementation}\label{sec:implementation}
 
@@ -10,21 +12,123 @@ Squarish is a React application that presents a 1000x1000 grid of squares which 
 The user selects a color from the preset colors on the left hand side and then select the square they wish to color.
 Each user can only change a square every five minutes, allowing for collaboration or competition amongst the player base.
 
+\subsection{Link}\label{subsec:link}
+The website is currently deployed on the dedicated university VM on:
+\begin{center}
+    \url{http://webtech-2324-57.napier.ac.uk/} and \url{http://146.176.251.242}.
+\end{center}
+
+The repository is available on GitHub:
+\begin{center}
+    \url{https://github.com/lawclaw/squarish}
+\end{center}
+
 
 \section{Comparison from outlined plan}\label{sec:comparison-from-outlined-plan}
 
+\subsection{Features}\label{subsec:features2}
+All the planned features from part 1 of the coursework have been implemented including the additional ones (refer to~\ref{tab:mainFeatures},~\ref{tab:additionalFeatures}).
+The application includes an interactive 1000 x 1000 grid.
+Users can change squares that are sent to the server using Socket.io and the WebSocket protocol.
+For additional features, a basic login system using email and password has been implemented along with the timeout functionality.
 
-\section{Additional features and future considerations}\label{sec:additional-features-and-future-considerations}
+New features in the final product was as followed:
+
+\begin{table}[!h]
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{|l|l|l|}
+            \hline
+            Feature       & Description                                                        & Reason                                  \\ \hline
+            Color palette & Set color palette for users to pick                                & Essential functionality                 \\ \hline
+            'About us'    & 'About' section describing the purpose of the website and controls & Explanations for user                   \\ \hline
+            Alert banner  & Alert banner for conveying information like errors                 & Make information visible and accessible \\ \hline
+            Database      & Database                                                           & Storing information of users and grid   \\ \hline
+            Panning       & Navigating the canvas                                              & User controls                           \\ \hline
+        \end{tabular}
+    }
+    \caption{New features in final product}
+    \label{tab:newFeatures}
+\end{table}
+
+\subsection{Wireframe}\label{subsec:wireframe2}
+As for the initial wireframe (refer to~\ref{fig:wireframe}), the design for the navigation bar remained the same.
+One notable change in the final version is the removal of the quick actions.
+This change came about after analyzing the users' use cases of the page.
+For most users, the main action outside of clicking on the canvas, was changing their selected color.
+With one primary action there was little justification to spend development time on quick actions, and thus it was removed and replaced with the color palette.
+
+\subsection{Navigation tree}\label{subsec:navigation-tree2}
+As for navigation tree (refer to~\ref{fig:navigationTree}), the design has remained relatively the same.
+The most significant change is that the React frontend serves three pages: home, login and signup.
+The 'about\_us' page was put in the home page as a smaller section.
+
+\subsection{Architecture}\label{subsec:architecture}
+
+
+
+As shown in~\ref{fig:architecture}, the architecture of the application can be broken down into three tiers: frontend, backend and database.
+The addition of a database became apparent as the authentication mechanism was developed.
+User data and accounts needed to be stored at a central place where it could be easily retrieved and modified.
+
+Unlike the traditional Jinja templates (which are served by the Flask application), the React frontend operates on its own and renders websites.
+The backend is therefore a JSON-RPC API that handles incoming requests from HTTP and Websocket.
+
+\subsubsection{PocketBase}
+PocketBase is both a backend and database service, all ready to go with a single executable.
+It allows for developers to quickly have a database without needing to install and configure unlike other database engines (MySQL, SQLite and so on).
+PocketBase is based on SQLite and has a UI (admin dashboard) where developers and admins can manage the database.
+
+The main reason for choosing PocketBase comes from the ease of use and the developer experience.
+For a small project like this coursework, being able to quickly create to modify collections and entries, was the winning factor.
+PocketBase also offers ready-to-go endpoints and configuration to abstract from using direct queries when not needed~\ref{fig:pbEndpoints}.
+There are pain points when dealing with databases and configuration which again would take time away from development and thus other options such as MySQL and native SQLite were discarded.
+
+\subsection{Data}\label{subsec:data}
+The application stores two types of data in two collections.
+The first collection: 'users', store the registered users.
+The second colletion: 'grids', store the different grids or canvases.
 
 
 \section{Reflection}\label{sec:reflection}
 
-Talk about
+\subsection{WebSocket and Socket.IO}\label{subsec:websocket-and-socket.io}
+This coursework gave me an opportunity to explore the WebSocket protocol and the Socket.IO library.
+Unlike HTTP, this protocol allows for real-time communication and broadcasting which again in some use cases is critical.
 
-Grid rendering using canvas, konvajs, pixijs
+\subsection{JSON Web Token (JWT)}\label{subsec:json-web-token-(jwt)}
+Going deep into authentication and learning about JWT has been also interesting.
+Although quite painful at times (such as having to choose between cookies vs. localStorage).
 
-Talk about JWT, authentication and how it relates to WEbsocket
+\subsection{Grid rendering and controls}\label{subsec:grid-rendering}
+During development, understanding how to render one million squares (1000 x 1000 grid) was the most time-consuming task.
+Initially a regular \textless canvas\textgreater~element was used to display the grid which proved to have a significant slow-down on any grid larger than 100 x 100.
 
-Talk about websockets
+After due research, the main strategy for rendering large canvases was to only render what the user could see and thus implement a camera functionality
+For example, if the client was zoomed in on a specific area, then it would be more efficient to only render those specific squares rather than loading everything.
+Creating a camera or viewport created very much complexity and this idea was in the end put on-hold.
 
-Talk about decision to use PocketBase
+The current solution was to use a library called 'react-virtualized'.
+The library offers a Grid component which only renders visible squares as a grid, improving both performance and load time.
+
+\subsection{Microservice Architecture}\label{subsec:microservice-architecture}
+By developing the backend as an API rather than a webpage serving application, there is a separation of concerns.
+For example, having an API allows for any HTTP compatible client to request the information they need.
+The backend simply responds with data which any client can use to present to their liking.
+If another developer wishes to write an Android application based of the data, the API allows them to retrieve the data without needing to refactor the code.
+
+This also comes with more complexity over using Jinja templates.
+But gaining a hands-on experience in developing a microservice architecture has been interesting.
+
+\section{Future considerations}\label{sec:additional-features-and-future-considerations}
+The main sore point at this stage is the grid.
+At the moment, the grid always starts in the top-left corner.
+The grid has limited x and y panning, and also lacks zooming.
+Therefore, the main priority for the future is to develop a new grid which can be panned and zoomed.
+A potential solution explored was PixiJS, a library dedicated to rendering canvases.
+
+There is also missing functionality with the login system such as a recovery mechanism.
+If a user forgets their password, there should be a recovery step (which doesn't exist at the moment).
+
+Another improvement is handling logout.
+Since JWT tokens are stored in localStorage, there is no set expiration time unlike cookies.
+Furthermore, if the user doesn't log out after 24 hours (when token has expired on server-side), there could be unexpected behaviours which have not been tested yet.
