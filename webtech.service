@@ -1,0 +1,15 @@
+# /etc/systemd/system/helloapp.service
+[Unit]
+Description=Advanced Webtech App
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/home/40507973/fleactPlace
+ExecStart=/home/40507973/fleactPlace/start.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
