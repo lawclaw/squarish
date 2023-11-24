@@ -51,6 +51,7 @@ export const useSocketStore = create<SocketStore>((set: StoreApi<SocketStore>['s
         set(() => ({grid: JSON.parse(data)}))
     })
 
+    // Currently when a message is received we only log it, for future can implement
     socket.on("status", (data) => {
         console.log(data)
     })

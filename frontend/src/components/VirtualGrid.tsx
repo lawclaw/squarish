@@ -59,7 +59,6 @@ const GridSquare = (props: GridSquareProps) => {
             }}
             onContextMenu={(e) => {
                 e.preventDefault()
-                console.log('right')
                 if (props.color !== selectedColor) {
                     setSelectedColor(props.color)
                 }

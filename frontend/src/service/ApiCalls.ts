@@ -19,7 +19,7 @@ export const signup = async (email: FormDataEntryValue | null, password: FormDat
     if (res.ok) {
         login(email, password);
     } else {
-        // TODO: Do something for UI when wrong info? or we can handle validation on client side?
+        // For future, forward error message to ui?
         const json = await res.json()
         console.log(json.message)
     }
