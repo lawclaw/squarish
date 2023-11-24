@@ -66,8 +66,6 @@ def change_color(data):
     col = data['col']
     color = data['color']
 
-    print(row, col, color)
-
     if row is None or col is None or color is None:
         return
 
