@@ -117,7 +117,7 @@ The backend simply responds with data which any client can use to present to the
 If another developer wishes to write an Android application based of the data, the API allows them to retrieve the data without needing to refactor the code.
 
 This also comes with more complexity over using Jinja templates.
-But gaining a hands-on experience in developing a microservice architecture has been interesting.
+But gaining a hands-on experience in developing a microservice architecture has been a rewarding experience.
 
 \section{Future considerations}\label{sec:additional-features-and-future-considerations}
 The main sore point at this stage is the grid.
@@ -127,8 +127,8 @@ Therefore, the main priority for the future is to develop a new grid which can b
 A potential solution explored was PixiJS, a library dedicated to rendering canvases.
 
 There is also missing functionality with the login system such as a recovery mechanism.
-If a user forgets their password, there should be a recovery step (which doesn't exist at the moment).
+If a user forgets their password, there should be a recovery step (which does not exist at the moment).
 
 Another improvement is handling logout.
 Since JWT tokens are stored in localStorage, there is no set expiration time unlike cookies.
-Furthermore, if the user doesn't log out after 24 hours (when token has expired on server-side), there could be unexpected behaviours which have not been tested yet.
+Furthermore, if the user does not log out after 24 hours (when token has expired server-side), there could be unexpected behaviours which have not been tested yet.
